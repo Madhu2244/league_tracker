@@ -1,5 +1,6 @@
 import { Todo } from "@/database/schema";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toggleTodo } from "@/actions/todos";
 
 export function TodoItem({ todo }: { todo: Todo }) {
 
@@ -10,6 +11,7 @@ export function TodoItem({ todo }: { todo: Todo }) {
         >
             <Checkbox
                 defaultChecked={todo.completed}
+                onCheckedChange={() => toggleTodo(todo.id)}
             />
             <span className={`flex-1 ${todo.completed ? "line-through text-muted-foreground" : ""}`}>
                 {todo.title}
