@@ -89,6 +89,13 @@ export async function authenticateAdmin() {
     if (!session?.user?.role || session.user.role !== "Admin") {
         return false;
     }
-    return true;
-    
+    return true;   
+}
+
+export async function authenticateUser() {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    return session !== null  
 }

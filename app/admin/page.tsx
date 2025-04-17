@@ -8,6 +8,7 @@ import { authenticateAdmin, deleteTodo } from "@/actions/todos"
 
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
+import { redirect } from "next/navigation";
 
 export const dynamic = 'force-dynamic'
 
@@ -15,6 +16,10 @@ export default async function AdminPage() {
     
     /* YOUR AUTHORIZATION CHECK HERE */
     const isAdmin = await authenticateAdmin();
+
+    if (!isAdmin) {
+        redirect("/todos");
+    }
 
     const allTodos = await db.query.todos.findMany({
         with: {
@@ -28,51 +33,47 @@ export default async function AdminPage() {
     });
 
     return (
-        isAdmin ? (
-            <main className="py-8 px-4">
-                <section className="container mx-auto">
-                    <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+        <main className="py-8 px-4">
+            <section className="container mx-auto">
+                <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
 
-                    <div className="border rounded-md overflow-hidden">
-                        <table className="w-full">
-                            <thead className="bg-muted">
+                <div className="border rounded-md overflow-hidden">
+                    <table className="w-full">
+                        <thead className="bg-muted">
+                            <tr>
+                                <th className="py-2 px-4 text-left">User</th>
+                                <th className="py-2 px-4 text-left">Todo</th>
+                                <th className="py-2 px-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {allTodos.length === 0 && (
                                 <tr>
-                                    <th className="py-2 px-4 text-left">User</th>
-                                    <th className="py-2 px-4 text-left">Todo</th>
-                                    <th className="py-2 px-4 text-center">Actions</th>
+                                    <td colSpan={3} className="py-2 px-4 text-center">No todos found</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {allTodos.length === 0 && (
-                                    <tr>
-                                        <td colSpan={3} className="py-2 px-4 text-center">No todos found</td>
-                                    </tr>
-                                )}
-                                {allTodos.map((todo) => (
-                                    <tr key={todo.id} className="border-t">
-                                        <td className="py-2 px-4">{todo.user.name}</td>
-                                        <td className="py-2 px-4">{todo.title}</td>
-                                        <td className="py-2 px-4 text-center">
-                                            <form action={deleteTodo}>
-                                                <input type="hidden" name="id" value={todo.id} />
-                                                <Button
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    type="submit"
-                                                >
-                                                    Delete
-                                                </Button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-            </main>
-        ) : (
-            <p>Please log in.</p>
-        )
+                            )}
+                            {allTodos.map((todo) => (
+                                <tr key={todo.id} className="border-t">
+                                    <td className="py-2 px-4">{todo.user.name}</td>
+                                    <td className="py-2 px-4">{todo.title}</td>
+                                    <td className="py-2 px-4 text-center">
+                                        <form action={deleteTodo}>
+                                            <input type="hidden" name="id" value={todo.id} />
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                type="submit"
+                                            >
+                                                Delete
+                                            </Button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
     )
 } 
