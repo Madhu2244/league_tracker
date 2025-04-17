@@ -13,7 +13,7 @@ export default async function TodosPage() {
         redirect("/auth/sign-in");
     }
 
-    const todos = await queryTodo(session);
+    const todos = await queryTodo(session) ?? [];
 
     return (
         <main className="py-8 px-4">
