@@ -8,6 +8,13 @@
       "when": 1744831993162,
       "tag": "0000_old_wendell_rand",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1744925276551,
+      "tag": "0001_clean_black_bolt",
+      "breakpoints": true
     }
   ]
 }

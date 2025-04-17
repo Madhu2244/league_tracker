@@ -12,33 +12,6 @@ export default async function TodosPage() {
 
     const todos = await queryTodo(session);
 
-    const templateTodos: Todo[] = [
-        {
-            id: "qwerty",
-            title: "Read React docs",
-            completed: true,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            userId: "SgcYNcEgbMxGZ1EnuCLYgf6OGac3UIOQ"
-        },
-        {
-            id: "uiop[]",
-            title: "Read Next.js docs",
-            completed: false,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            userId: "SgcYNcEgbMxGZ1EnuCLYgf6OGac3UIOQ"
-        },
-        {
-            id: "abcdefg",
-            title: "Finish CS 5356 homework",
-            completed: false,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            userId: "SgcYNcEgbMxGZ1EnuCLYgf6OGac3UIOQ"
-        }
-    ]
-
     return (
         session !== null ? (
             <main className="py-8 px-4">

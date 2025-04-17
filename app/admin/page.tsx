@@ -4,7 +4,7 @@ import { db } from "@/database/db"
 import { todos } from "@/database/schema"
 
 import { Button } from "@/components/ui/button"
-import { deleteTodo } from "@/actions/todos"
+import { authenticateAdmin, deleteTodo } from "@/actions/todos"
 
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
@@ -14,11 +14,7 @@ export const dynamic = 'force-dynamic'
 export default async function AdminPage() {
     
     /* YOUR AUTHORIZATION CHECK HERE */
-    const session = await auth.api.getSession({
-        headers: await headers()
-    })
-
-    console.log(session);
+    const isAdmin = await authenticateAdmin();
 
     const allTodos = await db.query.todos.findMany({
         with: {
@@ -32,7 +28,7 @@ export default async function AdminPage() {
     });
 
     return (
-        session !== null ? (
+        isAdmin ? (
             <main className="py-8 px-4">
                 <section className="container mx-auto">
                     <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>

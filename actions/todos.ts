@@ -59,18 +59,36 @@ export async function toggleTodo(todoId: string) {
 }
 
 export async function queryTodo(session: any) {
-    const todoList = await db.select()
-        .from(todos)
-        .where(eq(todos.userId, session.user.id));
-    
-    return todoList;
+    if (session !== null) {
+        const todoList = await db.select()
+            .from(todos)
+            .where(eq(todos.userId, session?.user?.id));
+        
+        return todoList;
+    }
 }
 
 export async function deleteTodo(formData: FormData) {
     /* YOUR AUTHORIZATION CHECK HERE */
-    const id = formData.get("id") as string;
-    await db.delete(todos)
-        .where(eq(todos.id, id));
+    const isAdmin = await authenticateAdmin();
+    if (isAdmin) {
+        const id = formData.get("id") as string;
+        await db.delete(todos)
+            .where(eq(todos.id, id));
 
-    revalidatePath("/admin");
+        revalidatePath("/admin");
+    }
+}
+
+
+export async function authenticateAdmin() {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if (!session?.user?.role || session.user.role !== "Admin") {
+        return false;
+    }
+    return true;
+    
 }
