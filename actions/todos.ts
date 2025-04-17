@@ -19,6 +19,7 @@ export async function createTodo(previousState: unknown, formData: FormData) {
         const currentTime = new Date();
 
         const todo: Todo = {
+            id: crypto.randomUUID(),
             title: title,
             completed: false,
             createdAt: currentTime,
