@@ -16,7 +16,7 @@ export async function Header() {
                         CS 5356 – HW 6
                     </Link>
                     <nav className="flex items-center gap-2">
-                        <Link href="/todos">
+                        <Link href="/champion-notes">
                             <Button variant="ghost">Todos</Button>
                         </Link>
                         {isAdmin && <AdminNavEntry />}
