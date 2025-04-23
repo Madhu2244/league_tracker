@@ -1,4 +1,4 @@
-import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
 
 import { users } from "./auth"
 import { relations } from "drizzle-orm"
