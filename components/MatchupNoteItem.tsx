@@ -8,9 +8,9 @@ export function MatchupNoteItem({ matchup: initialMatchup }: { matchup: any }) {
   const [isEditing, setIsEditing] = useState(false);
   const [matchup, setMatchup] = useState(initialMatchup);
   const [state, dispatch, isPending] = useActionState(
-    async (prevState, formData) => {
+    async (prevState: any, formData: any) => {
       const optimisticNotes = formData.get("notes") as string;
-      setMatchup((prev) => ({ ...prev, notes: optimisticNotes })); // Optimistic update
+      setMatchup((prev: any) => ({ ...prev, notes: optimisticNotes })); // Optimistic update
       const result = await updateMatchupNote(null, formData);
       if (!result?.success) {
         // Revert on error (you'd need to handle error display too)
