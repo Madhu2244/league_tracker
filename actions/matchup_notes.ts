@@ -1,45 +1,48 @@
+"use server"
+
 import { db } from "@/database/db"
 import { matchupNotes } from "@/database/schema";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache"
 
 export async function queryMatchupNotes(championNoteId: string) {
-  return await db
+  console.log(championNoteId);
+  return db
     .select()
     .from(matchupNotes)
-    .where(eq(matchupNotes.championNoteId, championNoteId))
-    .execute();
+    .where(eq(matchupNotes.championNoteId, championNoteId));
 }
 
-export async function createMatchupNote(previousState: unknown, formData: FormData) {
-    const championNoteId = formData.get("championNoteId") as string;
-    const enemyChampionName = formData.get("enemyChampionName") as string;
+export async function createMatchupNote(_: unknown, formData: FormData) {
+  const noteId = formData.get("championNoteId");
+  const enemyName = formData.get("enemyChampionName");
 
-    if (!championNoteId || !enemyChampionName) {
-        throw new Error("Missing required fields");
-    }
-    // championNoteId: string, enemyChampionName: string
-    
-    const currentTime = new Date();
-    const matchupNote = {
-        id: crypto.randomUUID(),
-        championNoteId: championNoteId,
-        enemyChampionName: enemyChampionName,
-        notes: "",
-        createdAt: currentTime,
-        updatedAt: currentTime
-    }
+  if (typeof noteId !== "string" || typeof enemyName !== "string") {
+    return { success: false, message: "Invalid data" };
+  }
 
-    await db.insert(matchupNotes).values(matchupNote);
-    // revalidatePath("/champion-notes")
-    return { success: true };
+  await db.insert(matchupNotes).values({
+    championNoteId: noteId,
+    enemyChampionName: enemyName,
+    notes: "",
+  });
+
+  revalidatePath(`/champion-notes/${noteId}`);
+
+  return { success: true };
 }
 
-export async function updateMatchupNote(noteId: string, updates: { enemyChampionName?: string; notes?: string }) {
+export async function updateMatchupNote(_: unknown, formData: FormData) {
+  const matchupId = formData.get("matchupId") as string;
+  const notes = formData.get("notes") as string;
+
   await db
     .update(matchupNotes)
-    .set({ 
-      ...updates,
+    .set({
+      notes,
       updatedAt: new Date(),
     })
-    .where(eq(matchupNotes.id, noteId));
+    .where(eq(matchupNotes.id, matchupId));
+  
+  return { success: true };
 }

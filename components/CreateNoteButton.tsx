@@ -1,16 +1,21 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
-export function CreateNoteButton() {
+type CreateNoteButtonProps = {
+  text: string;
+  route: string;
+};
+
+export function CreateNoteButton({ text, route }: CreateNoteButtonProps) {
   const router = useRouter();
 
   return (
     <button
-      onClick={() => router.push('/create-champion-note')}
+      onClick={() => router.push(route)}
       className="mt-6 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
     >
-      + Create New Champion Note
+      {text}
     </button>
   );
 }

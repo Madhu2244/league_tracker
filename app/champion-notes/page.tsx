@@ -41,7 +41,7 @@ export default async function ChampionNotesPage() {
                         ))}
                     </ul>
                 )}
-                <CreateNoteButton />
+                <CreateNoteButton text={"+ Create New Champion Note"} route={"/create-champion-note"} />
             </section>
         </main>
     );
