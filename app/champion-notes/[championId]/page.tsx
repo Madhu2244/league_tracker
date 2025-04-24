@@ -20,8 +20,6 @@ export default async function ChampionNotePage({ params }: any) {
     const note = await queryChampionNote(userId, championId);
     if (!note) notFound();
     const matchupNotes = await queryMatchupNotes(note.id);
-    console.log(matchupNotes)
-
 
     return (
         <main className="py-8 px-4">

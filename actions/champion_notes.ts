@@ -15,15 +15,28 @@ export async function queryChampionNotes(userId: string) {
 }
 
 export async function queryChampionNote(userId: string, championId: string) {
-    const result = await db
-      .select()
-      .from(championNotes)
-      .where(and(
-        eq(championNotes.userId, userId),
-        eq(championNotes.championName, championId)
-      ))
-      .limit(1)
-      .execute();
+    let result = null
+    if (championId.length < 12) {
+        result = await db
+            .select()
+            .from(championNotes)
+            .where(and(
+                eq(championNotes.userId, userId),
+                eq(championNotes.championName, championId)
+            ))
+            .limit(1)
+            .execute();
+    } else {
+        result = await db
+        .select()
+        .from(championNotes)
+        .where(and(
+            eq(championNotes.userId, userId),
+            eq(championNotes.id, championId)
+        ))
+        .limit(1)
+        .execute();
+    }
   
     return result[0] || null;
 }

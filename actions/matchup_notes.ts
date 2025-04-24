@@ -6,7 +6,6 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache"
 
 export async function queryMatchupNotes(championNoteId: string) {
-  console.log(championNoteId);
   return db
     .select()
     .from(matchupNotes)
