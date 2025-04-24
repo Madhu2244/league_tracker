@@ -4,7 +4,8 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { GeneralNotesEditor } from "@/components/GeneralNotesEditor";
 
-export default async function ChampionNotePage({ params }: { params: { championId?: string } }) {
+// @ts-expect-error Next.js sometimes treats `params` as a Promise
+export default async function ChampionNotePage({ params }: any) {
     const { championId } = await params;
     if (!championId) return notFound();
     const session = await auth.api.getSession({
