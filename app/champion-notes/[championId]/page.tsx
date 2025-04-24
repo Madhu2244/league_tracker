@@ -4,8 +4,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { GeneralNotesEditor } from "@/components/GeneralNotesEditor";
 
-// @ts-expect-error It says that params should not be await, but it also says that it should be awaited.
-export default async function ChampionNotePage({ params }: { params: { championId: Promise<string> } }) {
+export default async function ChampionNotePage({ params }: { params: { championId: string } }) {
     const session = await auth.api.getSession({
         headers: await headers(),
     });
@@ -14,7 +13,7 @@ export default async function ChampionNotePage({ params }: { params: { championI
         redirect("/auth/sign-in");
     }
     const userId = session.user.id;
-    const championId = await params?.championId;
+    const { championId } = await params;
     if (!championId) notFound();
 
     const note = await queryChampionNote(userId, championId);
