@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { GeneralNotesEditor } from "@/components/GeneralNotesEditor";
 
-
 export default async function ChampionNotePage({ params }: { params: { championId: string } }) {
     const session = await auth.api.getSession({
         headers: await headers(),
@@ -14,7 +13,7 @@ export default async function ChampionNotePage({ params }: { params: { championI
         redirect("/auth/sign-in");
     }
     const userId = session.user.id;
-    const { championId } = params; // Access params directly
+    const championId = await params?.championId;
 
     const note = await queryChampionNote(userId, championId);
     if (!note) notFound();
