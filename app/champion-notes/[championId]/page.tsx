@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { GeneralNotesEditor } from "@/components/GeneralNotesEditor";
 
-// @ts-expect-error Next.js sometimes treats `params` as a Promise
 export default async function ChampionNotePage({ params }: any) {
     const { championId } = await params;
     if (!championId) return notFound();
