@@ -2,7 +2,7 @@ import { queryChampionNotes } from "@/actions/champion_notes";
 import { CreateNoteButton } from "@/components/CreateNoteButton";
 import { DeleteNoteButton } from "@/components/DeleteNoteButton";
 import Link from "next/link";
-import { useAuth } from "@/lib/hooks/useAuth";
+import { useAuth } from "@/lib/useAuth";
 
 export default async function ChampionNotesPage() {
     const session = await useAuth();

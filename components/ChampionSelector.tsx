@@ -11,7 +11,7 @@ export default function ChampionSelector({
 }: {
   champions: any[];
   userId: string;
-  existingNotes: { championName: string }[]; // adjust type if needed
+  existingNotes: { championName: string }[];
 }) {
   const [selected, setSelected] = useState<string | null>(null);
   const router = useRouter();

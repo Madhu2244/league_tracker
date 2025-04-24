@@ -1,6 +1,6 @@
 import { queryChampionNote } from "@/actions/champion_notes";
 import { notFound } from "next/navigation";
-import { useAuth } from "@/lib/hooks/useAuth";
+import { useAuth } from "@/lib/useAuth";
 import { GeneralNotesEditor } from "@/components/GeneralNotesEditor";
 
 export default async function ChampionNotePage({ params }: { params: { championId: string } }) {
