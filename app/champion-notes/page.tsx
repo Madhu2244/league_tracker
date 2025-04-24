@@ -2,10 +2,18 @@ import { queryChampionNotes } from "@/actions/champion_notes";
 import { CreateNoteButton } from "@/components/CreateNoteButton";
 import { DeleteNoteButton } from "@/components/DeleteNoteButton";
 import Link from "next/link";
-import { useAuth } from "@/lib/useAuth";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 export default async function ChampionNotesPage() {
-    const session = await useAuth();
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        redirect("/auth/sign-in");
+    }
 
     const championNotes = await queryChampionNotes(session.user.id) ?? [];
 

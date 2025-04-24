@@ -19,7 +19,11 @@ export function GeneralNotesEditor({ noteId, initialNotes }: Props) {
 
   useEffect(() => {
     if (state.message) {
-      state.success ? success(state.message) : error(state.message);
+      if (state.success) {
+        success(state.message);
+      } else {
+        error(state.message);
+      }
     }
   }, [state, success, error]);
 
