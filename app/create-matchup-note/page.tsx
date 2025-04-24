@@ -3,12 +3,12 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { MatchupSelector } from "@/components/MatchupSelector";
 
-export default async function CreateMatchupNotePage({ params }: any) {
+export default async function CreateMatchupNotePage({ searchParams }: { searchParams: any }) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/auth/sign-in");
 
-  const championNoteId = params.championId;
-  if (!championNoteId) redirect("/champion-notes");
+  const championNoteId = await searchParams.noteId;
+  if (!championNoteId) redirect("/champion-notes"); // fallback just in case
 
   const res = await fetch("https://ddragon.leagueoflegends.com/cdn/15.8.1/data/en_US/champion.json");
   const data = await res.json();
